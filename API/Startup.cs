@@ -33,6 +33,7 @@ namespace API
                 options.UseSqlite(_config.GetConnectionString("DefaultConnection"));
             });
             services.AddControllers();
+            services.AddCors();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
@@ -52,6 +53,8 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            // la ubicacion de los cors dentro del metodo Configure  va siempre entre UserRouting y UseEndPoint, ya que el orden importa.
+            app.UseCors(policy => policy.AllowAnyHeader().WithOrigins("https://localhost:4200"));
 
             app.UseAuthorization();
 
